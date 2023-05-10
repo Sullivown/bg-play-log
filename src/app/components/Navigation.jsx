@@ -1,15 +1,16 @@
 import { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { PaperAirplaneIcon } from '@heroicons/react/24/solid';
 import { useSession, signIn, signOut } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const navigation = [
-	{ name: 'Dashboard', href: '#', current: true },
-	{ name: 'Team', href: '#', current: false },
-	{ name: 'Projects', href: '#', current: false },
-	{ name: 'Calendar', href: '#', current: false },
-	{ name: 'Reports', href: '#', current: false },
+	{ name: 'Home', href: '/' },
+	{ name: 'About', href: '/about' },
+	{ name: 'Dashboard', href: '/dashboard' },
 ];
 const userNavigation = [
 	{ name: 'Your Profile', href: '#' },
@@ -23,6 +24,8 @@ function classNames(...classes) {
 
 export default function Navigation() {
 	const { data: session } = useSession();
+	const pathname = usePathname();
+
 	function handleLoginClick() {
 		if (session) {
 			signOut();
@@ -39,29 +42,42 @@ export default function Navigation() {
 						<div className='flex h-16 items-center justify-between'>
 							<div className='flex items-center'>
 								<div className='flex-shrink-0'>
-									<p>Logo</p>
+									<PaperAirplaneIcon
+										className='text-white h-8 w-8'
+										alt='BG Play Log Logo'
+									/>
 								</div>
 								<div className='hidden md:block'>
 									<div className='ml-10 flex items-baseline space-x-4'>
-										{navigation.map((item) => (
-											<a
-												key={item.name}
-												href={item.href}
-												className={classNames(
-													item.current
-														? 'bg-gray-900 text-white'
-														: 'text-gray-300 hover:bg-gray-700 hover:text-white',
-													'rounded-md px-3 py-2 text-sm font-medium'
-												)}
-												aria-current={
-													item.current
-														? 'page'
-														: undefined
-												}
-											>
-												{item.name}
-											</a>
-										))}
+										{navigation.map((item) => {
+											const isActive =
+												pathname.length <= 1
+													? pathname.startsWith(
+															item.href
+													  )
+													: pathname.startsWith(
+															item.href
+													  ) && item.href !== '/';
+											return (
+												<Link
+													key={item.name}
+													href={item.href}
+													className={classNames(
+														isActive
+															? 'bg-gray-900 text-white'
+															: 'text-gray-300 hover:bg-gray-700 hover:text-white',
+														'rounded-md px-3 py-2 text-sm font-medium'
+													)}
+													aria-current={
+														isActive
+															? 'page'
+															: undefined
+													}
+												>
+													{item.name}
+												</Link>
+											);
+										})}
 									</div>
 								</div>
 							</div>
@@ -92,10 +108,12 @@ export default function Navigation() {
 													<span className='sr-only'>
 														Open user menu
 													</span>
-													<img
+													<Image
+														height={100}
+														width={100}
 														className='h-8 w-8 rounded-full'
 														src={session.user.image}
-														alt=''
+														alt='User profile picture'
 													/>
 												</Menu.Button>
 											</div>
@@ -117,7 +135,7 @@ export default function Navigation() {
 																{({
 																	active,
 																}) => (
-																	<a
+																	<Link
 																		href={
 																			item.href
 																		}
@@ -136,7 +154,7 @@ export default function Navigation() {
 																		{
 																			item.name
 																		}
-																	</a>
+																	</Link>
 																)}
 															</Menu.Item>
 														)
@@ -184,7 +202,7 @@ export default function Navigation() {
 							{navigation.map((item) => (
 								<Disclosure.Button
 									key={item.name}
-									as='a'
+									as='Link'
 									href={item.href}
 									className={classNames(
 										item.current
@@ -205,10 +223,12 @@ export default function Navigation() {
 								{session ? (
 									<>
 										<div className='flex-shrink-0'>
-											<img
+											<Image
+												height={100}
+												width={100}
 												className='h-10 w-10 rounded-full'
 												src={session.user.image}
-												alt=''
+												alt='User profile picture'
 											/>
 										</div>
 										<div className='ml-3'>
