@@ -40,7 +40,7 @@ export default function Breadcrumbs({ pathArr }) {
 						return (
 							<li key={item + '-bc'} aria-current='page'>
 								<div className='flex items-center'>
-									<ChevronRightIcon className='h-4 w-4 text-black-500' />
+									<ChevronRightIcon className='h-4 w-4' />
 									<span className='ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400'>
 										{item}
 									</span>
