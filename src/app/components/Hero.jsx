@@ -3,19 +3,16 @@ import Link from 'next/link';
 export default function Hero() {
 	return (
 		<div className='w-screen min-h-full bg-white'>
-			<div className='flex flex-row relative isolate px-6 pt-14 lg:px-8'>
+			<div className='flex flex-row px-6 pt-14 lg:px-8'>
 				<div className='mx-auto max-w-2xl py-32 sm:py-48 lg:py-56 '>
 					<div className='hidden sm:mb-8 sm:flex sm:justify-flex-start'>
-						<div className='relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20'>
+						<div className='rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20'>
 							Check out our latest features.{' '}
 							<Link
 								href='#'
 								className='font-semibold text-indigo-600'
 							>
-								<span
-									className='absolute inset-0'
-									aria-hidden='true'
-								/>
+								<span className='inset-0' aria-hidden='true' />
 								Read more <span aria-hidden='true'>&rarr;</span>
 							</Link>
 						</div>
