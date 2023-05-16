@@ -1,7 +1,10 @@
 import NextAuth from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 
-const handler = NextAuth({
+export const authOptions = {
+	session: {
+		strategy: 'jwt',
+	},
 	providers: [
 		GithubProvider({
 			clientId: process.env.GITHUB_ID,
@@ -9,6 +12,8 @@ const handler = NextAuth({
 		}),
 		// ...add more providers here
 	],
-});
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

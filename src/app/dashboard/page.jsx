@@ -1,24 +1,25 @@
-import { client } from '../../utils/contentfulClient';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../api/auth/[...nextauth]/route';
+
+import { getLocationsForUser } from '@/utils/apiCalls';
 
 export default async function Dashboard() {
-	console.log(client);
-	const data = await getData();
-	console.log(data);
+	const session = await getServerSession(authOptions);
+
+	const data = await getLocationsForUser(session.user.email);
+
 	return (
 		<div>
 			<h1>Dashboard</h1>
-			<div></div>
+			<div>
+				<ul>
+					{data.items.map((location) => (
+						<li key={location.sys.id}>
+							{location.fields.name} - {location.sys.id}
+						</li>
+					))}
+				</ul>
+			</div>
 		</div>
 	);
-}
-
-export async function getData() {
-	const res = await client.getEntries();
-
-	if (!res.ok) {
-		// This will activate the closest `error.js` Error Boundary
-		throw new Error('Failed to fetch data');
-	}
-
-	return res.json(data);
 }
