@@ -2,8 +2,8 @@
 
 import './globals.css';
 import Provider from './provider';
-import Navigation from './components/Navigation';
-import Header from './components/Header';
+import Navigation from '../components/Navigation';
+import Header from '../components/Header';
 
 export default function RootLayout({ children }) {
 	return (
