@@ -19,6 +19,11 @@ export async function getLocationsForUser(user) {
 	return data;
 }
 
+export async function getSingleLocation({ locationId }) {
+	const data = await deliveryClient.getEntry(locationId).catch(console.error);
+	return data;
+}
+
 export async function createLocationForUser({ data }) {
 	'use server';
 	const user = data.get('userId')?.valueOf();
@@ -41,4 +46,22 @@ export async function createLocationForUser({ data }) {
 		.catch(console.error);
 
 	return;
+}
+
+export async function updateLocationForUser({ entryId, data }) {
+	const user = data.get('userId')?.valueOf();
+	const locationName = data.get('name')?.valueOf();
+
+	managementClient
+		.getSpace(process.env.CONTENTFUL_SPACE_ID)
+		.then((space) => space.getEnvironment('master'))
+		.then((environment) => environment.getEntry(entryId))
+		.then((entry) => {
+			entry.fields.state = {
+				name: { 'en-US': locationName },
+				user: { 'en-US': user },
+			};
+			return entry.update();
+		})
+		.catch(console.error);
 }
