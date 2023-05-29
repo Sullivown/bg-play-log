@@ -2,20 +2,19 @@ import { getLocationsForUser, getLocation } from '@/utils/apiCalls';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import React from 'react';
-import { compress } from '../../../../../next.config';
 
 export async function getStaticParams() {
-	const locations = await getLocationsForUser;
+	const session = await getServerSession(authOptions);
+	const locations = await getLocationsForUser(session.user.email);
 
 	return locations.map((location) => ({
-		slug: location.sys.id,
+		id: location.sys.id,
 	}));
 }
 
 export default async function LocationPage({ params }) {
-	const session = await getServerSession(authOptions);
-	const { id } = params;
 	console.log(params);
+	const { id } = params;
 	const location = await getLocation({ locationId: id });
 
 	return (
