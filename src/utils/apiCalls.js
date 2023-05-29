@@ -19,7 +19,8 @@ export async function getLocationsForUser(user) {
 	return data;
 }
 
-export async function getSingleLocation({ locationId }) {
+export async function getLocation({ locationId }) {
+	console.log(locationId);
 	const data = await deliveryClient.getEntry(locationId).catch(console.error);
 	return data;
 }

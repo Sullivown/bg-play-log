@@ -1,6 +1,7 @@
 import { getLocationsForUser } from '@/utils/apiCalls';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../api/auth/[...nextauth]/route';
+import Link from 'next/link';
 
 export default async function LocationsPage() {
 	const session = await getServerSession(authOptions);
@@ -13,7 +14,11 @@ export default async function LocationsPage() {
 				<ul>
 					{data.items.map((location) => (
 						<li key={location.sys.id}>
-							{location.fields.name} - {location.sys.id}
+							<Link
+								href={`/dashboard/locations/${location.sys.id}`}
+							>
+								{location.fields.name} - {location.sys.id}
+							</Link>
 						</li>
 					))}
 				</ul>
